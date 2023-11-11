@@ -17,7 +17,7 @@
     var data = JSON.parse('{{ data|safe }}');
     console.log(data);
     var newData = data.reduce((chain, item) => {
-        date = new Date(item.fields.date).getTime();
+        date = new Date(item.fields.date_created).getTime();
         title = moment(date).format('YYYY-MM-DD');
         if (!chain[title]) {
             chain[title] = [];

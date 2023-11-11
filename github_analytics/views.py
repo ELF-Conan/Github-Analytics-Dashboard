@@ -171,6 +171,7 @@ def commit_frequency(request, repo_id):
         #'plot_div': plot_div,
         # 'plot_div': fig.to_html(full_html=False),
         'frequency': frequency,
+        'repo_id': repo_id,
         'data': serialize('json', CommitData.objects.all())
     }
 
