@@ -1,0 +1,107 @@
+{% extends "github_analytics/base.html" %}
+
+{% block content %}
+<h2>{{ repo.name }} - Pull Request Activity</h2>
+
+<!-- {{ plot_div|safe }} -->
+
+
+<div id="main" style="width: 100vw; height: 500px;"></div>
+<div id="line" style="width: 100vw; height: 500px;"></div>
+<!-- Visualization -->
+<!-- {{ plot_div|safe }} -->
+<script src="/static/echarts.js"></script>
+<script src="/static/monent.js"></script>
+<script>
+
+    var data = JSON.parse('{{ data|safe }}');
+    console.log(data);
+    var newData = data.reduce((chain, item) => {
+        date = new Date(item.fields.date).getTime();
+        title = moment(date).format('YYYY-MM-DD');
+        if (!chain[title]) {
+            chain[title] = [];
+        }
+        chain[title].push(item);
+        return chain;
+    }, {});
+     var myChart = echarts.init(document.getElementById('main'));
+     var xAxis = Object.keys(newData).map(item => {
+        return {
+            key: item,
+        title: item
+        };
+     }).sort((a, b) => {
+        return true;
+    });
+var option = {
+  tooltip: {},
+  xAxis: [{
+    data: xAxis.map(item => item.title)
+  }],
+  dataZoom: [
+    {
+      show: true,
+      realtime: true,
+      start: 30,
+      end: 70,
+      xAxisIndex: [0, 1]
+    },
+    {
+      type: 'inside',
+      realtime: true,
+      start: 30,
+      end: 70,
+      xAxisIndex: [0, 1]
+    }
+  ],
+  yAxis: {},
+  series: [
+    {
+      type: 'bar',
+      data: xAxis.map(item => (newData[item.key].length))
+    }
+  ]
+};
+
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+
+
+var myChartLine = echarts.init(document.getElementById('line'));
+var option = {
+  tooltip: {},
+  xAxis: [{
+    data: xAxis.map(item => item.title)
+  }],
+  dataZoom: [
+    {
+      show: true,
+      realtime: true,
+      start: 30,
+      end: 70,
+      xAxisIndex: [0, 1]
+    },
+    {
+      type: 'inside',
+      realtime: true,
+      start: 30,
+      end: 70,
+      xAxisIndex: [0, 1]
+    }
+  ],
+  yAxis: {},
+  series: [
+    {
+      type: 'line',
+      data: xAxis.map(item => (newData[item.key].length))
+    }
+  ]
+};
+
+// 使用刚指定的配置项和数据显示图表。
+myChartLine.setOption(option);
+</script>
+
+
+{% endblock %}
