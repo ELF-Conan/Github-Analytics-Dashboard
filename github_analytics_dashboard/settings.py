@@ -118,7 +118,7 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'visualize_repositories'
 #LOGIN_URL = 'login'
 #LOGOUT_URL = 'logout'
 #LOGOUT_REDIRECT_URL = 'login'
