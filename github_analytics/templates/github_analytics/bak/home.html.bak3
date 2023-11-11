@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>tut</title>
+    </head>
+    <body>
+      {% load socialaccount %}
+      {% providers_media_js %}
+<a href="{% provider_login_url 'github' method='js_sdk' %}?n
+ext=https://github.com">login with github</a>
+   </body>
+</html>

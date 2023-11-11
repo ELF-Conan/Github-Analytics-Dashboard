@@ -1,0 +1,14 @@
+{% extends "github_analytics/base.html" %}
+
+{% block content %}
+<h2>Repositories</h2>
+<ul>
+    {% for repo in repos %}
+    <li><span>{{ repo.name }}</span> 
+        - <a href="{% url 'commit_frequency' repo.github_repo_id %}">{{ repo.github_repo_id }}</a> 
+        - <a href="{% url 'visualize_pull_requests' repo.github_repo_id %}">PR</a>
+        - <a href="{% url 'visualize_contributors' repo.github_repo_id %}">Contributors</a>
+        <span>{{ repo.description }}</span></li>
+    {% endfor %}
+</ul>
+{% endblock %}

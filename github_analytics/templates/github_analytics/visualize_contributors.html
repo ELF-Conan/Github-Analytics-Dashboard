@@ -1,0 +1,9 @@
+{% extends "github_analytics/base.html" %}
+
+{% block content %}
+<h2>{{ repo.name }} - Contributor Contributions</h2>
+
+<div class="mt-4">
+    {{ plot_div|safe }}
+</div>
+{% endblock %}
