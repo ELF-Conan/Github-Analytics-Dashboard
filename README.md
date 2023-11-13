@@ -14,15 +14,19 @@ The GitHub Analytics Dashboard is a web-based tool designed to provide developer
 Here are brief instructions on how to run the GitHub Analytics Dashboard locally:
 
 1. Clone the repository:
+
 git clone https://github.com/ELF-Conan/Github-Analytics-Dashboard.git
 
 2. Install dependencies:
+
 pip install -r requirements.txt
 
 3. Run migrations to create database tables:
+
 python manage.py migrate
 
 4. Start the Django development server:
+
 python manage.py runserver
 
 5. Access `http://localhost:8000` in your browser.
