@@ -21,6 +21,11 @@
 
     var data = JSON.parse('{{ data|safe }}');
     var frequency = '{{ frequency }}';
+    var repo_id = +'{{repo_id}}';
+    data = data.filter(item => item.fields.repository == repo_id);
+    data = data.sort((a, b) => {
+        return new Date(a.fields.date).getTime() - new Date(b.fields.date).getTime();
+    });
     var newData = data.reduce((chain, item) => {
         date = new Date(item.fields.date).getTime();
         title = '';
@@ -56,15 +61,15 @@ var option = {
     {
       show: true,
       realtime: true,
-      start: 30,
-      end: 70,
+      start: 0,
+      end: 100,
       xAxisIndex: [0, 1]
     },
     {
       type: 'inside',
       realtime: true,
-      start: 30,
-      end: 70,
+      start: 0,
+      end: 100,
       xAxisIndex: [0, 1]
     }
   ],
@@ -91,15 +96,15 @@ var option = {
     {
       show: true,
       realtime: true,
-      start: 30,
-      end: 70,
+      start: 0,
+      end: 100,
       xAxisIndex: [0, 1]
     },
     {
       type: 'inside',
       realtime: true,
-      start: 30,
-      end: 70,
+      start: 0,
+      end: 100,
       xAxisIndex: [0, 1]
     }
   ],

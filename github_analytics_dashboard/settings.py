@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'social_django',
     'github_analytics',
-    #'github_analytics.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +117,7 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'visualize_repositories'
 #LOGIN_URL = 'login'
 #LOGOUT_URL = 'logout'
 #LOGOUT_REDIRECT_URL = 'login'
@@ -126,7 +125,7 @@ LOGIN_REDIRECT_URL = 'home'
 #SOCIAL_AUTH_GITHUB_KEY = 'Iv1.60604acee3bb4380'
 #SOCIAL_AUTH_GITHUB_SECRET = 'a9fb7cbab83ea937ac487951233b822115dde038'
 
-# 使用邮箱登录，而不是用户名
+# use email to log in, not username.
 #ACCOUNT_AUTHENTICATION_METHOD = 'email'
 #ACCOUNT_UNIQUE_EMAIL = True
 #ACCOUNT_EMAIL_REQUIRED = True

@@ -1,8 +1,0 @@
-{% extends "github_analytics/base.html" %}
-
-{% block content %}
-<h2>Commit Frequency</h2>
-<div id="commit-frequency">
-    {{ plot_div|safe }}
-</div>
-{% endblock %}

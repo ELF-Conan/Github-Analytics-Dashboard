@@ -28,7 +28,6 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('test/', views.test, name='test'),
     path('commit_frequency/<int:repo_id>', views.commit_frequency, name='commit_frequency'),
-    #path('repo/<str:repo_name>', views.repo, name='repo'),
     path('visualize_pull_requests/<int:repo_id>', views.visualize_pull_requests, name='visualize_pull_requests'),
     path('visualize_contributors/<int:repo_id>', views.visualize_contributors, name='visualize_contributors'),
     path('visualize_repositories/', views.visualize_repositories, name='visualize_repositories'),
