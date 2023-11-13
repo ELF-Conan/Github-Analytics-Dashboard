@@ -17,7 +17,6 @@ from django.conf import settings
 from django.core.serializers import serialize
 import json,os
 
-#from github.models import Repository, Commit
 # Create your views here.
 def home(request):
     return render(request, 'github_analytics/home.html')
@@ -43,25 +42,13 @@ def fetch_github_data(request):
 
         # Fetch and save commit data
         commits = get_repo_commits(user_token, repo["full_name"])
-        with open('./commit.json', 'w') as file1:
-            json.dump(commits, file1)
-        ###commit_count_by_date = defaultdict(int)
-        ###for commit in commits:
-        ###    commit_date_str = commit["commit"]["author"]["date"]
-        ###    commit_date = datetime.strptime(commit_date_str, "%Y-%m-%dT%H:%M:%SZ").date()
-        ###    commit_count_by_date[commit_date] += 1
         for commit in commits:
             commit_date = datetime.strptime(commit['commit']['author']['date'], '%Y-%m-%dT%H:%M:%SZ').date()
-
-        #for date, count in commit_count_by_date.items():
             CommitData.objects.get_or_create(
                 repository=repo_obj,
-                date=commit_date,
-        #        defaults={"commit_count": count},   
+                date=commit_date,  
             )
-        print(serialize('json', CommitData.objects.all()))
-        with open('./commit.json', 'w') as file2:
-            json.dump(commits, file2)
+
         # Fetch and save pull request data
         prs = get_repo_pull_requests(user_token, repo["full_name"])
         for pr in prs:
@@ -91,8 +78,6 @@ def fetch_github_data(request):
 
         # Fetch and save contributor data
         contributors = get_repo_contributors(user_token, repo["full_name"])
-        #with open('./contributors.json', 'w') as file2:
-        #    json.dump(contributors, file2)
         for contributor in contributors:
             contributor_profile, created = UserProfile.objects.get_or_create(
                 github_username=contributor["login"],
@@ -116,60 +101,15 @@ def commit_frequency(request, repo_id):
     frequency = request.GET.get('frequency', 'Daily')
 
     # Fetching commit data based on the selected frequency
-    #raw_date = CommitData.objects.values('date')
-    # print("I am raw date: " + json.dumps(raw_date))
     if frequency == 'Daily':
-        # For daily, we can use the data as it is
-        #commits_data = CommitData.objects.filter(repository=repo)
-        #dates = [commit.date for commit in commits_data]
-        #counts = [commit.commit_count for commit in commits_data]
-        #print(serialize('json', CommitData.objects.all()))
-        #data =  CommitData.objects.filter(repository=repo).annotate(truncated_date=TruncDay('date')).values('date').annotate(commit_count=Count('id'))
-        
         data = CommitData.objects.annotate(commit_count=Count('date'))
     elif frequency == 'Weekly':
-        # You'll have to aggregate the data on a weekly basis. This is just a simple example and may require adjustments.
-        #commits_data = CommitData.objects.filter(repository=repo).extra(select={'week': 'date(date_trunc(\'week\', date))'}).values('week').annotate(total=Sum('commit_count'))
-        #dates = [commit['week'] for commit in commits_data]
-        #counts = [commit['total'] for commit in commits_data]
         data = CommitData.objects.filter(repository=repo).annotate(truncated_date=TruncWeek('date')).values('date').annotate(commit_count=Count('id'))
     elif frequency == 'Monthly':
-        # Similar to weekly, but for month
-        #commits_data = CommitData.objects.filter(repository=repo).extra(select={'month': 'date(date_trunc(\'month\', date))'}).values('month').annotate(total=Sum('commit_count'))
-        #dates = [commit['month'] for commit in commits_data]
-        #counts = [commit['total'] for commit in commits_data]
         data =  CommitData.objects.filter(repository=repo).annotate(truncated_date=TruncMonth('date')).values('date').annotate(commit_count=Count('id'))
-
-    # dates = [item['date'] for item in data]
-    # counts = [item['commit_count'] for item in data]
-    #print('jjjjjjjjjbbbb')
-    #print(data)
-    #print(dates)
-    #print(counts)
-    #plt.figure(figsize=(10, 6))
-    #plt.plot(dates, counts, marker='o')
-    #plt.title(f'Commit Frequency for {repo.name} ({frequency})')
-    #plt.xlabel('Date')
-    #plt.ylabel('Number of Commits')
-    #plt.grid(True)
-    #plot_dir = 'github_analytics'
-    #plot_path = os.path.join(plot_dir, f'commit_frequency_{frequency}.png')
-    #plt.savefig(plot_path)
-    #plt.close()
-    # Assuming Commit model has fields 'date' and 'count'
-
-    # Using Plotly to generate the chart
-    #data = [go.Bar(x=dates, y=counts)]
-    #layout = go.Layout(title=f'Commit Frequency Over Time ({frequency})')
-    #fig = go.Figure(data=data, layout=layout)
-    #title=f'Commit Frequency Over Time ({frequency})'
-    # fig = px.line(x=dates, y=counts, labels={'x': 'Date', 'y': 'Number of Commits'}, title=title)
-    #plot_div = pyo.plot(fig, output_type='div', include_plotlyjs=False)
 
     context = {
         'repo': repo,
-        #'plot_div': plot_div,
-        # 'plot_div': fig.to_html(full_html=False),
         'frequency': frequency,
         'repo_id': repo_id,
         'data': serialize('json', CommitData.objects.all())

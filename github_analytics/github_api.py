@@ -18,14 +18,6 @@ def get_repo_commits(user_token, repo_name):
     response = requests.get(url, headers=get_headers(user_token))
     return response.json()
 
-
-#def get_repo(user_token, repo_name):
-#    url = f"{BASE_URL}repos/{repo_name}/REPO"
-#    response = requests.get(url, headers=get_headers(user_token))
-#    #print(response.json())
-#    return response.json()
-#
-
 def get_repo_pull_requests(user_token, repo_name):
     url = f"{BASE_URL}repos/{repo_name}/pulls?state=all"
     response = requests.get(url, headers=get_headers(user_token))
